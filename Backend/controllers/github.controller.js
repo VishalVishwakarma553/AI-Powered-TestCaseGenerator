@@ -33,7 +33,7 @@ export const githubCallback = async (req, res) => {
     tokenStore[userName] = accessToken;
     if (userName) {
       return res.redirect(
-        `http://localhost:5173/?success=true&user=${userName}`
+        `${process.env.FRONTEND_URL}/?success=true&user=${userName}`
       );
     }
   } catch (error) {
