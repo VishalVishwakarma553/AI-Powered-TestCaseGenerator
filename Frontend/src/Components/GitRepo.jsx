@@ -24,7 +24,6 @@ const GitRepo = () => {
     };
     getRepository();
   }, []);
-  console.log(allRepo)
   return (
     <div className="sm:p-6 p-0 mt-4 sm:mt-0 min-h-screen">
       <h1 className="sm:text-3xl text-xl font-bold mb-8 text-gray-800">

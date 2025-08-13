@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Store/UserContext";
 import { GoogleGenAI } from "@google/genai";
 import {LoaderCircle} from "lucide-react"
+import toast from "react-hot-toast"
 
 const TestCode = () => {
   const { selectedSummary } = useContext(UserContext);
   const [testCode, setTestCode] = useState("");
   const [copied, setCopied] = useState(false)
-  console.log("Summary", selectedSummary);
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     setIsLoading(true)
@@ -20,6 +20,7 @@ const TestCode = () => {
         toast.error(
           "file name, code, summary are required for code generation"
         );
+        setIsLoading(false)
         return;
       }
       let frameWorkSuggestion = "";
@@ -47,19 +48,26 @@ const TestCode = () => {
         apiKey: import.meta.env.VITE_GEMINI_API_KEY,
       });
       async function main() {
-        const response = await ai.models.generateContent({
+        try{
+          setIsLoading(true)
+          const response = await ai.models.generateContent({
           model: "gemini-2.5-flash",
           contents: `Based on the following code and the test case summary "${selectedSummary?.summary}" and code ${selectedSummary?.code}, generate the complete test case code.
         ${frameWorkSuggestion} Ensure the code is runnable and includes necessary imports and setup.
         Provide only the code block, no additional explanations or markdown outside the code block itself. Do not wrap in backticks unless it's part of the actual code.`,
         });
         // JSON.parse(jsonrepair(response.text))
-        console.log("AI Test Code Response", response?.text);
         setTestCode(response?.text);
+        }catch(error){
+          console.log("Error in Generating AI response", error)
+          toast.error("Error in generating AI response")
+        }finally{
+          setIsLoading(false)
+        }
       }
       main();
     };
-    HandleTestCode().finally(() => setIsLoading(false));
+    HandleTestCode();
   }, []);
 
   const handleCopy = () => {
