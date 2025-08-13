@@ -15,7 +15,7 @@ const TestSummary = () => {
     setIsLoading(true);
     const handleTestSummaryGeneration = async () => {
       const ai = new GoogleGenAI({
-        apiKey: import.meta.env.GEMINI_API_KEY,
+        apiKey: import.meta.env.VITE_GEMINI_API_KEY,
       });
 
       async function generateSummary(file) {

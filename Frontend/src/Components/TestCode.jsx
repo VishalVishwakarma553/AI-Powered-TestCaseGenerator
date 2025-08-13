@@ -44,7 +44,7 @@ const TestCode = () => {
       }
       // Gemini api
       const ai = new GoogleGenAI({
-        apiKey: import.meta.env.GEMINI_API_KEY,
+        apiKey: import.meta.env.VITE_GEMINI_API_KEY,
       });
       async function main() {
         const response = await ai.models.generateContent({
