@@ -29,7 +29,7 @@ function App() {
       const sendCodeToBackend = async () => {
         try {
           await axios.get(
-            `http://localhost:5000/api/github/callback?code=${code}`
+            `${import.meta.env.VITE_BACKEND_URL}/api/github/callback?code=${code}`
           );
         } catch (error) {
           console.error("Error sending code to backend:", error);
@@ -41,7 +41,7 @@ function App() {
 
   const githubLogin = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/github/login");
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/github/login`);
       // To redirect on sent login url from backend
       window.location.href = res.data.url;
     } catch (error) {
